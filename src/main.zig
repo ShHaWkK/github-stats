@@ -45,6 +45,7 @@ const Args = struct {
     exclude_repos: ?[]const u8 = null,
     exclude_langs: ?[]const u8 = null,
     exclude_private: bool = false,
+    max_languages: ?usize = null,
     overview_output_file: ?[]const u8 = null,
     languages_output_file: ?[]const u8 = null,
     overview_template: ?[]const u8 = null,
@@ -111,13 +112,18 @@ fn languages(
     arena: *std.heap.ArenaAllocator,
     stats: anytype,
     template: []const u8,
+    max_languages: ?usize,
 ) ![]const u8 {
     const a = arena.allocator();
-    const progress = try a.alloc([]const u8, stats.languages.count());
-    const lang_list = try a.alloc([]const u8, stats.languages.count());
+    const count = @min(
+        stats.languages.count(),
+        max_languages orelse stats.languages.count(),
+    );
+    const progress = try a.alloc([]const u8, count);
+    const lang_list = try a.alloc([]const u8, count);
     for (
-        stats.languages.keys(),
-        stats.languages.values(),
+        stats.languages.keys()[0..count],
+        stats.languages.values()[0..count],
         progress,
         lang_list,
         0..,
@@ -331,6 +337,7 @@ pub fn main(init: std.process.Init) !void {
                     try readFile(arena.allocator(), io, template)
                 else
                     embedded_languages_template,
+                args.max_languages,
             ),
         );
     }
