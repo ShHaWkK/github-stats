@@ -144,6 +144,10 @@ and retrieve the images.
        the CLI](#list-languages), or in the [list used by GitHub
        linguist](https://github.com/github-linguist/linguist/blob/537297cdae3ab05f8d5dd1c03627a5bd73707b19/lib/linguist/languages.yml)
        (which powers their language analysis on the back end).
+   - To limit the languages card to the top N languages, set
+     `MAX_LANGUAGES` to a positive integer in the workflow environment, or
+     pass `--max-languages N` when using the CLI. If it is unset, all
+     languages are displayed as before.
    - Lists for `EXCLUDE_REPOS` and `EXCLUDE_LANGS` can use globbing patterns.
      For example, to exclude all repos by user "jstrieb", add `jstrieb/*` to
      `EXCLUDE_REPOS`.
