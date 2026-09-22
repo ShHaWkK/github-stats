@@ -115,15 +115,15 @@ fn languages(
     max_languages: ?usize,
 ) ![]const u8 {
     const a = arena.allocator();
-    const count = @min(
+    const display_count = @min(
         stats.languages.count(),
         max_languages orelse stats.languages.count(),
     );
-    const progress = try a.alloc([]const u8, count);
-    const lang_list = try a.alloc([]const u8, count);
+    const progress = try a.alloc([]const u8, display_count);
+    const lang_list = try a.alloc([]const u8, display_count);
     for (
-        stats.languages.keys()[0..count],
-        stats.languages.values()[0..count],
+        stats.languages.keys()[0..display_count],
+        stats.languages.values()[0..display_count],
         progress,
         lang_list,
         0..,
